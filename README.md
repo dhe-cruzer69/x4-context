@@ -13,6 +13,24 @@ Part of the X4 / ARIEX4Ops ecosystem.
 - Route compressed context via MCP to any compatible agent
 - Evidence-backed: every compression decision is logged
 
+<!-- X4-APEX-DIAGRAM-START:x4-context -->
+
+```mermaid
+flowchart TD
+    INPUT[Tool Output and Session Context] --> POLICY[Retention and Compression Policies]
+    POLICY --> PROTECT[Preserve Required Instructions and Evidence]
+    PROTECT --> COMPRESS[Compression Strategy]
+    COMPRESS --> MEMORY[Session and Episodic Memory]
+    MEMORY --> STORE[Context Store]
+    STORE --> MCP[MCP Context Exposure]
+    MCP --> AGENT[Compatible Agent]
+    COMPRESS --> AUDIT[Log Compression Decision]
+    INJECTION[Untrusted Retrieved Text] -. classify and flag .-> POLICY
+    LIMIT[Configured Token Budget] -. constrains .-> COMPRESS
+```
+
+<!-- X4-APEX-DIAGRAM-END:x4-context -->
+
 ## Quick Start
 
 ```bash
