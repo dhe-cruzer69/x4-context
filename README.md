@@ -59,23 +59,5 @@ Apache-2.0
 
 > Status: architecture documentation; implementation and deployment claims require independent verification.
 
-```mermaid
-flowchart LR
-  Input[Prompt + retrieved context] --> Size[Enforce input byte/token budget]
-  Size --> SecretScan[Detect and redact sensitive values]
-  SecretScan --> TrustLabel[Label source and trust level]
-  TrustLabel --> InjectionScan[Detect instruction-like untrusted content]
-  InjectionScan --> Segment[Segment by source and priority]
-  Segment --> Compress[Compress with preserved provenance]
-  Compress --> Fidelity{Required facts and constraints retained?}
-  Fidelity -->|no| Rebuild[Rebuild with less compression]
-  Rebuild --> Fidelity
-  Fidelity -->|yes| Budget{Within output token budget?}
-  Budget -->|no| Truncate[Truncate lowest-priority segments]
-  Truncate --> Recheck[Revalidate required constraints]
-  Recheck -->|fail| Reject[Return explicit context-budget error]
-  Recheck -->|pass| Output[Emit bounded context + source labels]
-  Budget -->|yes| Output
-```
 **Evidence note:** Token counting, redaction, provenance, and injection handling must be tested against adversarial fixtures; compression must not silently discard mandatory constraints.
 
